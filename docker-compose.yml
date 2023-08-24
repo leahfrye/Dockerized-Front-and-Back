@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+  front-and-back:
+    stdin_open: true
+    build: 
+      context: .
+    env_file:
+      - .env 
+    volumes:
+      - type: bind
+        consistency: delegated
+        source: ./
+        target: /app/
+      - /app/node_modules
+      - /app/client/node_modules
+    ports:
+      - 3000:3000
+      - 80:80
+    command: ash -c "cd client && yarn install && cd .. && yarn install && yarn run dev"
+    container_name: dockerized-front-and-back
+    restart: unless-stopped
